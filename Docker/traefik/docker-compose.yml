@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:latest
+    networks:
+      - web
+    ports:
+      - 80:80
+    volumes:
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.router0.rule=Host(`traefik.localhost`)"
+      - "traefik.http.services.router0.loadbalancer.server.port=8080"
+
+networks:
+  web:
+    external: true
+  
